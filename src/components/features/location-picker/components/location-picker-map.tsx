@@ -100,7 +100,7 @@ export const LocationPickerMap = ({ location }: LocationPickerMapProps) => {
     }, [searchParams, router])
 
     return (
-        <div className="over h-full min-h-80 overflow-hidden rounded-xl">
+        <div className="over h-full overflow-hidden rounded-xl">
             <ReactMapGl
                 ref={mapRef}
                 id="locations-map"
