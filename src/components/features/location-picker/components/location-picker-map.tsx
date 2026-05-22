@@ -6,68 +6,54 @@ import { GeolocateControl, MapRef, NavigationControl, Map as ReactMapGl, ViewSta
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
+import type { MapLocation } from '@/utils/location-query'
+
 const transparentPixel = {
     width: 1,
     height: 1,
     data: new Uint8Array([0, 0, 0, 0]),
 }
 
-export const LocationPickerMap = () => {
+type LocationPickerMapProps = {
+    location: MapLocation
+}
+
+export const LocationPickerMap = ({ location }: LocationPickerMapProps) => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const mapRef = useRef<MapRef>(null)
 
     const [isMapMoving, setIsMapMoving] = useState(false)
-    const [initialViewState, setInitialViewState] = useState<ViewState | null>(null)
-
-    const lastMovedByMapRef = useRef<{ lat: number; lng: number } | null>(null)
-
-    useEffect(() => {
-        const lat = parseFloat(searchParams.get('lat') || '')
-        const lng = parseFloat(searchParams.get('lng') || '')
-        const zoom = parseFloat(searchParams.get('zoom') || '')
-
-        if (!isNaN(lat) && !isNaN(lng) && !isNaN(zoom)) {
-            setInitialViewState({
-                latitude: lat,
-                longitude: lng,
-                zoom,
-                bearing: 0,
-                pitch: 0,
-                padding: { top: 0, right: 0, bottom: 0, left: 0 },
-            })
-        }
-    }, [searchParams])
+    const [initialViewState] = useState<ViewState>({
+        latitude: location.coordinates.lat,
+        longitude: location.coordinates.lng,
+        zoom: location.zoom,
+        bearing: 0,
+        pitch: 0,
+        padding: { top: 0, right: 0, bottom: 0, left: 0 },
+    })
 
     useEffect(() => {
         const map = mapRef.current
         if (!map) return
 
-        const lat = parseFloat(searchParams.get('lat') || '')
-        const lng = parseFloat(searchParams.get('lng') || '')
-        const zoom = parseFloat(searchParams.get('zoom') || '')
-
-        if (isNaN(lat) || isNaN(lng) || isNaN(zoom)) return
-
         const center = map.getCenter()
+        const zoom = map.getZoom()
         const roundedLat = parseFloat(center.lat.toFixed(6))
         const roundedLng = parseFloat(center.lng.toFixed(6))
+        const roundedZoom = Math.round(zoom * 10) / 10
 
-        const latChanged = Math.abs(roundedLat - lat) > 1e-6
-        const lngChanged = Math.abs(roundedLng - lng) > 1e-6
+        const latChanged = Math.abs(roundedLat - location.coordinates.lat) > 1e-6
+        const lngChanged = Math.abs(roundedLng - location.coordinates.lng) > 1e-6
+        const zoomChanged = Math.abs(roundedZoom - location.zoom) > 1e-6
 
-        // Проверяем, не мы ли только что изменили эти координаты
-        const lastMoved = lastMovedByMapRef.current
-        const sameAsLastMoved =
-            lastMoved && Math.abs(lastMoved.lat - lat) < 1e-6 && Math.abs(lastMoved.lng - lng) < 1e-6
-
-        if ((latChanged || lngChanged) && !sameAsLastMoved) {
+        if (latChanged || lngChanged || zoomChanged) {
             map.jumpTo({
-                center: [lng, lat],
-                zoom,
+                center: [location.coordinates.lng, location.coordinates.lat],
+                zoom: location.zoom,
             })
         }
-    }, [searchParams])
+    }, [location])
 
     useEffect(() => {
         const map = mapRef.current?.getMap()
@@ -105,8 +91,6 @@ export const LocationPickerMap = () => {
         const roundedLat = parseFloat(center.lat.toFixed(6))
         const roundedLng = parseFloat(center.lng.toFixed(6))
 
-        lastMovedByMapRef.current = { lat: roundedLat, lng: roundedLng }
-
         const params = new URLSearchParams(searchParams.toString())
         params.set('lat', roundedLat.toString())
         params.set('lng', roundedLng.toString())
@@ -115,14 +99,12 @@ export const LocationPickerMap = () => {
         router.replace(`?${params.toString()}`, { scroll: false })
     }, [searchParams, router])
 
-    if (!initialViewState) return null
-
     return (
-        <div className="over h-full overflow-hidden rounded-xl">
+        <div className="over h-full min-h-80 overflow-hidden rounded-xl">
             <ReactMapGl
                 ref={mapRef}
                 id="locations-map"
-                mapStyle="https://tiles.stadiamaps.com/styles/outdoors.json"
+                mapStyle="https://tiles.openfreemap.org/styles/bright"
                 initialViewState={initialViewState}
                 onMoveStart={handleMoveStart}
                 onMoveEnd={handleMoveEnd}
@@ -139,14 +121,14 @@ export const LocationPickerMap = () => {
                     width={27}
                     height={41}
                     alt=""
-                    className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-[13.5px] -translate-y-9"
+                    className="pointer-events-none absolute top-1/2 left-1/2 translate-x-[-13.5px] -translate-y-9"
                 />
                 <Image
                     src="/images/pin.svg"
                     width={27}
                     height={41}
                     alt=""
-                    className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-[13.5px] -translate-y-9"
+                    className="pointer-events-none absolute top-1/2 left-1/2 translate-x-[-13.5px] -translate-y-9"
                     style={{ marginTop: isMapMoving ? -8 : 0 }}
                 />
             </ReactMapGl>
