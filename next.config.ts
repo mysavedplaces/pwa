@@ -2,7 +2,19 @@ import type { NextConfig } from 'next'
 import withPWA from 'next-pwa'
 
 const nextConfig: NextConfig = {
-    /* config options here */
+    async headers() {
+        return [
+            {
+                source: '/.well-known/apple-app-site-association',
+                headers: [
+                    {
+                        key: 'Content-Type',
+                        value: 'application/json',
+                    },
+                ],
+            },
+        ]
+    },
 }
 
 const withPwaConfig = withPWA({
