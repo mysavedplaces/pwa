@@ -13,6 +13,10 @@ export async function GET(req: Request) {
             return NextResponse.json({ items: [], error: 'Missing query parameter "q"' }, { status: 400 })
         }
 
+        if (q.length < 3) {
+            return NextResponse.json({ items: [], error: null }, { status: 200 })
+        }
+
         const items = await fetchPreferredAutocompleteItems(q, { coordinates, locale })
 
         return NextResponse.json(

@@ -32,6 +32,18 @@ type ReverseGeocodeLocation = {
 
 const DEFAULT_LOCALE = 'en'
 const DEFAULT_LIMIT = 5
+const AUTOCOMPLETE_CACHE_TTL_MS = 5 * 60 * 1000
+const REVERSE_GEOCODE_CACHE_TTL_MS = 60 * 60 * 1000
+
+type CacheEntry<T> = {
+    expiresAt: number
+    value: T
+}
+
+const autocompleteCache = new Map<string, CacheEntry<SearchItem[]>>()
+const reverseGeocodeCache = new Map<string, CacheEntry<ReverseGeocodeLocation>>()
+const pendingAutocompleteRequests = new Map<string, Promise<SearchItem[]>>()
+const pendingReverseGeocodeRequests = new Map<string, Promise<ReverseGeocodeLocation>>()
 
 const getLocationIQConfig = () => {
     const apiKey = process.env.LOCATIONIQ_API_KEY
@@ -42,6 +54,28 @@ const getLocationIQConfig = () => {
     }
 
     return { apiKey, apiUrl }
+}
+
+const getCachedValue = <T>(cache: Map<string, CacheEntry<T>>, key: string): T | null => {
+    const entry = cache.get(key)
+
+    if (!entry) return null
+
+    if (entry.expiresAt <= Date.now()) {
+        cache.delete(key)
+        return null
+    }
+
+    return entry.value
+}
+
+const setCachedValue = <T>(cache: Map<string, CacheEntry<T>>, key: string, value: T, ttlMs: number): T => {
+    cache.set(key, {
+        expiresAt: Date.now() + ttlMs,
+        value,
+    })
+
+    return value
 }
 
 export const normalizeLocale = (locale?: string | null): string => {
@@ -70,7 +104,7 @@ const fetchWithRetry = async (url: string, init?: RequestInit, attempts = 2): Pr
     let lastResponse: Response | null = null
 
     for (let attempt = 0; attempt < attempts; attempt += 1) {
-        const res = await fetch(url, { ...init, cache: 'no-store' })
+        const res = await fetch(url, { ...init, cache: 'no-store', signal: init?.signal ?? AbortSignal.timeout(5000) })
 
         if (res.ok || res.status < 500 || attempt === attempts - 1) {
             return res
@@ -99,9 +133,52 @@ const mergeSearchItems = (primaryItems: SearchItem[], fallbackItems: SearchItem[
     return Array.from(itemsByKey.values()).slice(0, limit)
 }
 
+const getAutocompleteCacheKey = (q: string, options: AutocompleteOptions, limit: number): string => {
+    const countryCode = options.countryCode?.toLowerCase() || 'global'
+    return [q.trim().toLowerCase(), countryCode, normalizeLocale(options.locale), limit].join('|')
+}
+
+const getReverseGeocodeCacheKey = (
+    lat: number | string,
+    lon: number | string,
+    options: ReverseGeocodeOptions,
+): string => {
+    const coordinatePrecision = options.includeAddressDetails ? 2 : 6
+    const roundedLat = Number(lat).toFixed(coordinatePrecision)
+    const roundedLon = Number(lon).toFixed(coordinatePrecision)
+    const addressDetails = options.includeAddressDetails ? 'details' : 'address'
+
+    return [roundedLat, roundedLon, normalizeLocale(options.locale), addressDetails].join('|')
+}
+
 export const fetchAutocompleteItems = async (q: string, options: AutocompleteOptions = {}): Promise<SearchItem[]> => {
-    const { apiKey, apiUrl } = getLocationIQConfig()
     const limit = options.limit || DEFAULT_LIMIT
+    const cacheKey = getAutocompleteCacheKey(q, options, limit)
+    const cachedItems = getCachedValue(autocompleteCache, cacheKey)
+
+    if (cachedItems) return cachedItems
+
+    const pendingRequest = pendingAutocompleteRequests.get(cacheKey)
+
+    if (pendingRequest) return pendingRequest
+
+    const request = fetchAutocompleteItemsFromLocationIQ(q, options, limit)
+        .then(items => setCachedValue(autocompleteCache, cacheKey, items, AUTOCOMPLETE_CACHE_TTL_MS))
+        .finally(() => {
+            pendingAutocompleteRequests.delete(cacheKey)
+        })
+
+    pendingAutocompleteRequests.set(cacheKey, request)
+
+    return request
+}
+
+const fetchAutocompleteItemsFromLocationIQ = async (
+    q: string,
+    options: AutocompleteOptions,
+    limit: number,
+): Promise<SearchItem[]> => {
+    const { apiKey, apiUrl } = getLocationIQConfig()
 
     const params = new URLSearchParams({
         key: apiKey,
@@ -170,7 +247,7 @@ export const fetchPreferredAutocompleteItems = async (
             locale: options.locale,
         })
 
-        if (localItems.length >= limit) {
+        if (localItems.length > 0) {
             return localItems.slice(0, limit)
         }
 
@@ -184,6 +261,31 @@ export const fetchPreferredAutocompleteItems = async (
 }
 
 export const fetchReverseGeocodeLocation = async (
+    lat: number | string,
+    lon: number | string,
+    options: ReverseGeocodeOptions = {},
+): Promise<ReverseGeocodeLocation> => {
+    const cacheKey = getReverseGeocodeCacheKey(lat, lon, options)
+    const cachedLocation = getCachedValue(reverseGeocodeCache, cacheKey)
+
+    if (cachedLocation) return cachedLocation
+
+    const pendingRequest = pendingReverseGeocodeRequests.get(cacheKey)
+
+    if (pendingRequest) return pendingRequest
+
+    const request = fetchReverseGeocodeLocationFromLocationIQ(lat, lon, options)
+        .then(location => setCachedValue(reverseGeocodeCache, cacheKey, location, REVERSE_GEOCODE_CACHE_TTL_MS))
+        .finally(() => {
+            pendingReverseGeocodeRequests.delete(cacheKey)
+        })
+
+    pendingReverseGeocodeRequests.set(cacheKey, request)
+
+    return request
+}
+
+const fetchReverseGeocodeLocationFromLocationIQ = async (
     lat: number | string,
     lon: number | string,
     options: ReverseGeocodeOptions = {},
