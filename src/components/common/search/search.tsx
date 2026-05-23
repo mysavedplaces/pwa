@@ -18,7 +18,11 @@ type SearchResponse = {
 
 const fetcher = async (url: string): Promise<SearchResponse> => {
     const res = await fetch(url)
-    if (!res.ok) throw new Error('Failed to fetch')
+    if (!res.ok) {
+        const error = new Error('Failed to fetch')
+        error.cause = res.status
+        throw error
+    }
     return res.json()
 }
 
@@ -53,9 +57,15 @@ export const Search = () => {
         searchApiUrl,
         fetcher,
         {
-            errorRetryCount: 2,
+            dedupingInterval: 30_000,
+            errorRetryCount: 1,
             errorRetryInterval: 700,
             keepPreviousData: true,
+            onErrorRetry: (error, _key, _config, revalidate, { retryCount }) => {
+                if (error.cause === 429 || retryCount >= 1) return
+
+                setTimeout(() => revalidate({ retryCount }), 700)
+            },
         },
     )
 
