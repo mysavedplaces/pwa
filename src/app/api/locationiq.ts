@@ -31,7 +31,7 @@ type ReverseGeocodeLocation = {
 }
 
 const DEFAULT_LOCALE = 'en'
-const DEFAULT_LIMIT = 5
+const DEFAULT_LIMIT = 10
 
 const getLocationIQConfig = () => {
     const apiKey = process.env.LOCATIONIQ_API_KEY
