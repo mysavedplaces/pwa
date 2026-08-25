@@ -7,7 +7,6 @@ import { Logo } from '@/components/ui/logo'
 
 const NAV_ITEMS = [
     { href: '/saved', label: 'Saved' },
-    { href: '/coordinate-converter', label: 'Converter' },
     { href: '/about', label: 'About' },
 ]
 

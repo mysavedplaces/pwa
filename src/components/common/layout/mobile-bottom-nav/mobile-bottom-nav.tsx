@@ -1,7 +1,7 @@
 'use client'
 
 import classNames from 'classnames'
-import { CompassIcon, HeartIcon, HouseIcon, InfoIcon } from 'lucide-react'
+import { HeartIcon, HouseIcon, InfoIcon } from 'lucide-react'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -9,7 +9,6 @@ import { usePathname } from 'next/navigation'
 const NAV_ITEMS = [
     { href: '/', label: 'Home', icon: HouseIcon },
     { href: '/saved', label: 'Saved', icon: HeartIcon },
-    { href: '/coordinate-converter', label: 'Converter', icon: CompassIcon },
     { href: '/about', label: 'About', icon: InfoIcon },
 ]
 
