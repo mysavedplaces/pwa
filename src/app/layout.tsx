@@ -17,7 +17,7 @@ const roboto = Roboto({
     subsets: ['latin', 'cyrillic'],
 })
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://location-picker.tripadvancer.com'
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.mysavedplaces.com'
 
 export const metadata: Metadata = {
     metadataBase: new URL(appUrl),
@@ -38,7 +38,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
                 <meta name="yandex-verification" content="b588c94393b01e7f" />
-                <link href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" rel="stylesheet" />
+                <link href="https://unpkg.com/maplibre-gl@6.6.0/dist/maplibre-gl.css" rel="stylesheet" />
                 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
                 <link rel="apple-touch-icon" href="/icons/icon-192.png" />
             </head>

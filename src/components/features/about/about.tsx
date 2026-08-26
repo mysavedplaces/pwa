@@ -95,10 +95,10 @@ export const About = () => {
                             <li>
                                 Open Safari and go to{' '}
                                 <Link
-                                    href="https://location-picker.tripadvancer.com"
+                                    href="https://app.mysavedplaces.com"
                                     className="text-blue-500 hover:text-blue-600"
                                 >
-                                    https://location-picker.tripadvancer.com
+                                    https://app.mysavedplaces.com
                                 </Link>
                                 .
                             </li>
@@ -112,10 +112,10 @@ export const About = () => {
                             <li>
                                 Open Safari and go to{' '}
                                 <Link
-                                    href="https://location-picker.tripadvancer.com"
+                                    href="https://app.mysavedplaces.com"
                                     className="text-blue-500 hover:text-blue-600"
                                 >
-                                    https://location-picker.tripadvancer.com
+                                    https://app.mysavedplaces.com
                                 </Link>
                                 .
                             </li>

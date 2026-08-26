@@ -3,10 +3,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { GeolocateControl, MapRef, NavigationControl, Map as ReactMapGl, ViewState } from 'react-map-gl/maplibre'
 
+import { setWorkerUrl } from 'maplibre-gl'
+
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import type { MapLocation } from '@/utils/location-query'
+
+import 'maplibre-gl/dist/maplibre-gl.css'
+
+// MapLibre GL JS 6.x requires an explicit worker URL when bundled.
+setWorkerUrl('/maplibre-gl-worker.mjs')
 
 const transparentPixel = {
     width: 1,
@@ -24,21 +31,29 @@ export const LocationPickerMap = ({ location }: LocationPickerMapProps) => {
     const mapRef = useRef<MapRef>(null)
 
     const [isMapMoving, setIsMapMoving] = useState(false)
+
     const [initialViewState] = useState<ViewState>({
         latitude: location.coordinates.lat,
         longitude: location.coordinates.lng,
         zoom: location.zoom,
         bearing: 0,
         pitch: 0,
-        padding: { top: 0, right: 0, bottom: 0, left: 0 },
+        padding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+        },
     })
 
     useEffect(() => {
         const map = mapRef.current
+
         if (!map) return
 
         const center = map.getCenter()
         const zoom = map.getZoom()
+
         const roundedLat = parseFloat(center.lat.toFixed(6))
         const roundedLng = parseFloat(center.lng.toFixed(6))
         const roundedZoom = Math.round(zoom * 10) / 10
@@ -57,6 +72,7 @@ export const LocationPickerMap = ({ location }: LocationPickerMapProps) => {
 
     useEffect(() => {
         const map = mapRef.current?.getMap()
+
         if (!map) return
 
         const handleStyleImageMissing = (event: { id: string }) => {
@@ -80,23 +96,29 @@ export const LocationPickerMap = ({ location }: LocationPickerMapProps) => {
         setIsMapMoving(false)
 
         const map = mapRef.current
+
         if (!map) return
 
         const center = map.getCenter()
         const zoom = map.getZoom()
 
-        if (isNaN(center.lat) || isNaN(center.lng) || isNaN(zoom)) return
+        if (isNaN(center.lat) || isNaN(center.lng) || isNaN(zoom)) {
+            return
+        }
 
         const roundedZoom = Math.round(zoom * 10) / 10
         const roundedLat = parseFloat(center.lat.toFixed(6))
         const roundedLng = parseFloat(center.lng.toFixed(6))
 
         const params = new URLSearchParams(searchParams.toString())
+
         params.set('lat', roundedLat.toString())
         params.set('lng', roundedLng.toString())
         params.set('zoom', roundedZoom.toFixed(1))
 
-        router.replace(`?${params.toString()}`, { scroll: false })
+        router.replace(`?${params.toString()}`, {
+            scroll: false,
+        })
     }, [searchParams, router])
 
     return (
@@ -110,10 +132,15 @@ export const LocationPickerMap = ({ location }: LocationPickerMapProps) => {
                 onMoveEnd={handleMoveEnd}
             >
                 <GeolocateControl
-                    positionOptions={{ enableHighAccuracy: true }}
+                    positionOptions={{
+                        enableHighAccuracy: true,
+                    }}
                     trackUserLocation={false}
-                    fitBoundsOptions={{ duration: 0 }}
+                    fitBoundsOptions={{
+                        duration: 0,
+                    }}
                 />
+
                 <NavigationControl />
 
                 <Image
@@ -123,13 +150,16 @@ export const LocationPickerMap = ({ location }: LocationPickerMapProps) => {
                     alt=""
                     className="pointer-events-none absolute top-1/2 left-1/2 translate-x-[-13.5px] -translate-y-9"
                 />
+
                 <Image
                     src="/images/pin.svg"
                     width={27}
                     height={41}
                     alt=""
                     className="pointer-events-none absolute top-1/2 left-1/2 translate-x-[-13.5px] -translate-y-9"
-                    style={{ marginTop: isMapMoving ? -8 : 0 }}
+                    style={{
+                        marginTop: isMapMoving ? -8 : 0,
+                    }}
                 />
             </ReactMapGl>
         </div>

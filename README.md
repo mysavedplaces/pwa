@@ -1,12 +1,12 @@
-[![Deploy Status](https://github.com/tripadvancer/location-picker/actions/workflows/deploy.yml/badge.svg)](https://github.com/location-picker/location-picker.pwa/actions/workflows/deploy.yml)
+[![Deploy Status](https://github.com/mysavedplaces/pwa/actions/workflows/deploy.yml/badge.svg)](https://github.com/mysavedplaces/pwa/actions/workflows/deploy.yml)
 
 # My Saved Places
 
 A simple app built with Next.js and MapLibre.
 
-[https://location-picker.tripadvancer.com](https://location-picker.tripadvancer.com)
+[https://app.mysavedplaces.com](https://app.mysavedplaces.com)
 
-![](https://raw.githubusercontent.com/tripadvancer/location-picker/refs/heads/master/public/images/about/demo.png)
+![](https://raw.githubusercontent.com/mysavedplaces/pwa/refs/heads/master/public/images/about/demo.png)
 
 ## Features
 
