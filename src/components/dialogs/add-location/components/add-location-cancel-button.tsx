@@ -11,7 +11,7 @@ export const AddLocationCancelButton = () => {
     }
 
     return (
-        <Button variant="minor" className="w-full md:hidden" onClick={handleClick}>
+        <Button variant="minor" className="w-full" onClick={handleClick}>
             Cancel
         </Button>
     )

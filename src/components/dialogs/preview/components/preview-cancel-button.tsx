@@ -11,7 +11,7 @@ export const PreviewCancelButton = () => {
     }
 
     return (
-        <Button variant="minor" className="w-full md:hidden" onClick={handleCancel}>
+        <Button variant="minor" className="w-full" onClick={handleCancel}>
             Cancel
         </Button>
     )

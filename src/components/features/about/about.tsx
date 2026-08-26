@@ -60,18 +60,6 @@ export const About = () => {
                 </p>
             </AboutExpander>
 
-            <AboutExpander title="Coordinate Converter">
-                <p>
-                    Easily{' '}
-                    <Link href="/coordinate-converter" className="text-blue-500 hover:text-blue-600">
-                        convert coordinates
-                    </Link>{' '}
-                    between Decimal Degrees (DD) and Degrees, Minutes, Seconds (DMS) formats. Just enter coordinates in
-                    one format, and the tool instantly shows you the equivalent in&nbsp;the other, making it&nbsp;simple
-                    to&nbsp;work with different coordinate systems.
-                </p>
-            </AboutExpander>
-
             <AboutExpander title="Use in Full Screen Mode on phone">
                 <div className="flex items-center space-x-4">
                     <div className="hidden w-1/3 shrink-0 md:block">

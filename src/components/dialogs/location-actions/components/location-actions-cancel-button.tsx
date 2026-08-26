@@ -11,7 +11,7 @@ export const LocationActionsCancelButton = () => {
     }
 
     return (
-        <Button variant="minor" className="md:hidden" onClick={handleClick}>
+        <Button variant="minor" onClick={handleClick}>
             Cancel
         </Button>
     )
