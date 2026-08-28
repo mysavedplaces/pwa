@@ -44,40 +44,58 @@ export const SavedLocations = () => {
     const handleClear = () => setSearch('')
 
     return (
-        <section className="w-full space-y-4">
-            {places.length > 0 && (
-                <SearchInput
-                    value={search}
-                    placeholder="Search by name..."
-                    variant="white"
-                    isLoading={isLoading}
-                    onChange={setSearch}
-                    onClick={() => {}}
-                    onClear={handleClear}
-                />
+        <section className="relative w-full space-y-6">
+            {places.length > 0 ? (
+                <>
+                    <SearchInput
+                        value={search}
+                        placeholder="Search by name..."
+                        variant="white"
+                        isLoading={isLoading}
+                        onChange={setSearch}
+                        onClick={() => {}}
+                        onClear={handleClear}
+                    />
+
+                    <div className="flex flex-col gap-y-6">
+                        {pinnedPlaces.length > 0 && (
+                            <div className="space-y-4">
+                                <Divider label="Pinned places" />
+                                <div className="space-y-2">
+                                    {pinnedPlaces.map(place => (
+                                        <SavedLocationsItem
+                                            key={`place-${place.id}`}
+                                            place={place}
+                                            onLoadPlaces={loadPlaces}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {regularPlaces.length > 0 && (
+                            <div className="space-y-4">
+                                <Divider label="Other places" />
+                                <div className="space-y-2">
+                                    {regularPlaces.map(place => (
+                                        <SavedLocationsItem
+                                            key={`place-${place.id}`}
+                                            place={place}
+                                            onLoadPlaces={loadPlaces}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </>
+            ) : (
+                <div className="text-sm text-gray-500">You have no saved locations yet.</div>
             )}
-
-            <ul className="flex flex-col gap-y-2">
-                {pinnedPlaces.length > 0 && (
-                    <>
-                        {pinnedPlaces.map(place => (
-                            <SavedLocationsItem key={`place-${place.id}`} place={place} onLoadPlaces={loadPlaces} />
-                        ))}
-
-                        <Divider label="Pinned" />
-                    </>
-                )}
-
-                {regularPlaces.map(place => (
-                    <SavedLocationsItem key={`place-${place.id}`} place={place} onLoadPlaces={loadPlaces} />
-                ))}
-            </ul>
 
             {places.length > 0 && pinnedPlaces.length === 0 && regularPlaces.length === 0 && (
                 <div className="text-sm text-gray-500">No locations match your search.</div>
             )}
-
-            {places.length === 0 && <div className="text-sm text-gray-500">You have no saved locations yet.</div>}
         </section>
     )
 }

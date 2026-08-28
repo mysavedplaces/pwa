@@ -32,13 +32,13 @@ export const SavedLocationsItem = ({ place, onLoadPlaces }: SavedLocationsItemPr
     }
 
     return (
-        <li className="flex cursor-pointer items-center justify-between rounded-xl border border-gray-100 bg-gray-50 text-sm hover:bg-gray-100">
+        <div className="flex cursor-pointer items-center justify-between rounded-xl border border-gray-100 bg-gray-50 text-sm hover:bg-gray-100">
             <div className="flex-1 p-4 font-bold" onClick={handleClick}>
                 {place.name}
             </div>
             <div className="cursor-pointer p-4" onClick={handleTogglePin}>
                 <PinIcon size={18} color={place.pinned ? '#000000' : '#9CA3AF'} />
             </div>
-        </li>
+        </div>
     )
 }
