@@ -3,7 +3,6 @@
 import { Place } from '@/utils/types'
 
 import { PreviewCancelButton } from './components/preview-cancel-button'
-import { PreviewCopyCoordinatesButton } from './components/preview-copy-coordinates-button'
 import { PreviewEditButton } from './components/preview-edit-button'
 import { PreviewShowOnMapButton } from './components/preview-show-on-map-button'
 
@@ -21,7 +20,6 @@ export const Preview = ({ place, onSuccess }: PreviewProps) => {
             </div>
 
             <PreviewShowOnMapButton place={place} />
-            <PreviewCopyCoordinatesButton place={place} />
             <PreviewEditButton place={place} onSuccess={onSuccess} />
             <PreviewCancelButton />
         </div>

@@ -2,11 +2,9 @@ import type { ReactNode } from 'react'
 
 import classNames from 'classnames'
 import type { Metadata, Viewport } from 'next'
-
-import { GoogleAnalytics } from '@next/third-parties/google'
 import { Roboto } from 'next/font/google'
 
-import YandexMetrika from '@/components/common/yandex-metrika/yandex-metrika'
+import { Analytics } from '@/components/common/analytics/analytics'
 import { OverlayProvider } from '@/components/providers/overlay-provider'
 import { ToastProvider } from '@/components/providers/toast-provider'
 import { TailwindIndicator } from '@/components/ui/tailwind-indicator'
@@ -46,8 +44,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                 <ToastProvider>
                     <OverlayProvider>
                         {children}
-                        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID as string} />
-                        <YandexMetrika />
+                        <Analytics />
                     </OverlayProvider>
                 </ToastProvider>
                 <TailwindIndicator />
