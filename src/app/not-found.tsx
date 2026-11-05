@@ -1,4 +1,14 @@
 import Image from 'next/image'
+import type { Metadata } from 'next'
+
+import { createPageMetadata } from '@/utils/seo'
+
+export const metadata: Metadata = createPageMetadata({
+    title: 'Page Not Found',
+    description: 'The requested My Saved Places page could not be found.',
+    pathname: '/404',
+    index: false,
+})
 
 export default function NotFound() {
     return (

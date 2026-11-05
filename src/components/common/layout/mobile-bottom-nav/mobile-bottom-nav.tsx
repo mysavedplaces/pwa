@@ -1,7 +1,7 @@
 'use client'
 
 import classNames from 'classnames'
-import { HeartIcon, HouseIcon, InfoIcon } from 'lucide-react'
+import { HeartIcon, HouseIcon, SettingsIcon } from 'lucide-react'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation'
 const NAV_ITEMS = [
     { href: '/', label: 'Home', icon: HouseIcon },
     { href: '/saved', label: 'Saved', icon: HeartIcon },
-    { href: '/about', label: 'About', icon: InfoIcon },
+    { href: '/settings', label: 'Settings', icon: SettingsIcon },
 ]
 
 export const MobileBottomNav = () => {
@@ -18,7 +18,7 @@ export const MobileBottomNav = () => {
     return (
         <nav className="fixed right-0 bottom-0 left-0 z-40 flex border-t border-gray-300 bg-white md:hidden">
             {NAV_ITEMS.map(item => {
-                const isActive = pathname === item.href
+                const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
                 const Icon = item.icon
 
                 return (

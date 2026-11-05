@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 export default function LegalLayout({ children }: Readonly<{ children: ReactNode }>) {
     return (

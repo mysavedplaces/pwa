@@ -1,49 +1,56 @@
 'use client'
 
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { ReactNode, TouchEvent } from 'react'
 
 import classNames from 'classnames'
+import { useScrollLock } from 'usehooks-ts'
 
 import { Keys } from '@/utils/enums'
 import { useKeypress } from '@/utils/hooks/use-keypress'
 
 type BottomSheetProps = {
     content: ReactNode
+    isClosing: boolean
     onClose: () => void
+    onRequestClose: () => void
 }
 
-export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
+export const BottomSheet = ({ content, isClosing, onClose, onRequestClose }: BottomSheetProps) => {
     const [visible, setVisible] = useState(false)
     const [translateY, setTranslateY] = useState(0)
 
-    useKeypress(Keys.ESCAPE, onClose)
+    useScrollLock({ autoLock: true })
+    useKeypress(Keys.ESCAPE, onRequestClose)
 
     const startY = useRef<number | null>(null)
+    const hasClosed = useRef(false)
+
+    const closeWithAnimation = useCallback(() => {
+        if (hasClosed.current) return
+
+        hasClosed.current = true
+        setVisible(false)
+        window.setTimeout(onClose, 300)
+    }, [onClose])
 
     useEffect(() => {
         requestAnimationFrame(() => {
             setVisible(true)
         })
-
-        document.body.style.overflow = 'hidden'
-
-        return () => {
-            document.body.style.overflow = ''
-        }
     }, [])
 
-    const closeWithAnimation = () => {
-        setVisible(false)
-        setTimeout(() => {
-            onClose()
-        }, 300)
-    }
+    useEffect(() => {
+        if (isClosing) {
+            closeWithAnimation()
+        }
+    }, [closeWithAnimation, isClosing])
 
-    const handleTouchStart = (e: React.TouchEvent) => {
+    const handleTouchStart = (e: TouchEvent) => {
         startY.current = e.touches[0].clientY
     }
 
-    const handleTouchMove = (e: React.TouchEvent) => {
+    const handleTouchMove = (e: TouchEvent) => {
         if (startY.current === null) return
         const diff = e.touches[0].clientY - startY.current
         if (diff > 0) setTranslateY(diff)
@@ -59,8 +66,10 @@ export const BottomSheet = ({ content, onClose }: BottomSheetProps) => {
 
     return (
         <>
-            <div
-                onClick={closeWithAnimation}
+            <button
+                type="button"
+                aria-label="Close dialog"
+                onClick={onRequestClose}
                 className={classNames(
                     'fixed inset-0 z-40 bg-black/40 transition-opacity duration-300',
                     visible ? 'opacity-100' : 'pointer-events-none opacity-0',

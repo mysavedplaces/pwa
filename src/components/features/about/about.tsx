@@ -1,141 +1,74 @@
-import { InfoIcon } from 'lucide-react'
-
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { ExternalLink } from '@/components/ui/external-link'
 
-import { AboutExpander } from './components/about-expander'
+import { AboutSection } from './components/about-section'
 
 export const About = () => {
     return (
-        <div className="space-y-4">
-            <p className="mb-8">
-                <strong>My Saved Places</strong> is a simple and convenient tool for finding, saving, and sharing
-                locations. Search for places using an address or coordinates, then easily open or share them with apps
-                like Google Maps, Waze, Apple Maps, or Yandex Maps.
-            </p>
-
-            <div className="flex items-start gap-x-2 rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-400">
-                <InfoIcon size={20} className="hidden shrink-0 md:block" />
-                We&nbsp;don&rsquo;t store any personal data. The saved locations are only stored in&nbsp;your
-                browser&rsquo;s local storage.
-            </div>
-
-            <AboutExpander title="About">
-                <div className="space-y-4">
-                    <p>Hey everyone!</p>
-                    <p>
-                        My&nbsp;wife and&nbsp;I spend a&nbsp;lot of&nbsp;time driving and traveling through different
-                        countries. Every country has its own favorite navigation apps that work best there. For&nbsp;me,
-                        switching between apps is&nbsp;easy, but for my&nbsp;wife&mdash;who&rsquo;s not really into
-                        tech&mdash;it can be&nbsp;tricky. She usually asks me to&nbsp;send her the destination
-                        in&nbsp;a&nbsp;message&mdash;not just the location, but a&nbsp;link that opens the right
-                        navigation app with the route ready to&nbsp;go.
-                    </p>
-                    <p>
-                        To&nbsp;make this easier, I&nbsp;created this small app that helps find the right spot, adjust
-                        it&nbsp;if needed, and generate a&nbsp;link for the navigation app you want. I&nbsp;hope you
-                        find it&nbsp;useful too!
-                    </p>
-                    {/* <p>
-                        Thanks so&nbsp;much! I&rsquo;d really appreciate any{' '}
-                        <ExternalLink href="https://www.producthunt.com/products/location-picker">
-                            feedback
-                        </ExternalLink>
-                        .
-                    </p> */}
-                </div>
-            </AboutExpander>
-
-            <AboutExpander title="Saved Locations">
+        <div className="min-h-full w-full space-y-6">
+            <AboutSection title="My Saved Places">
                 <p>
-                    You can save your favorite locations directly in&nbsp;the app and easily access them on&nbsp;the
-                    &quot;
-                    <Link href="/saved" className="text-blue-500 hover:text-blue-600">
-                        My Saved Locations
-                    </Link>
-                    &quot; page. All saved data is&nbsp;stored locally on&nbsp;your device, so&nbsp;your information
-                    stays private and available even without an&nbsp;internet connection.
+                    My Saved Places is a place and location organizer for saving favorite places in seconds. Keep
+                    locations, map bookmarks, and saved destinations in one place, organize them into lists, and open
+                    directions instantly in your favorite navigation app.
                 </p>
-            </AboutExpander>
+            </AboutSection>
 
-            <AboutExpander title="Use in Full Screen Mode on phone">
-                <div className="flex items-center space-x-4">
-                    <div className="hidden w-1/3 shrink-0 md:block">
-                        <Image
-                            src="/images/about/full-screen.jpg"
-                            alt="Full Screen Mode"
-                            width={800}
-                            height={1334}
-                            className="w-full"
-                        />
-                    </div>
+            <AboutSection title="Why it exists">
+                <p>
+                    I use different navigation apps depending on the situation: Google Maps for walking and cycling,
+                    Waze for driving, Yandex services while traveling around Eastern Europe, and taxi apps when I need a
+                    ride. The problem is that every app keeps its own separate saved places list.
+                </p>
+                <p>
+                    Over time, the same locations end up duplicated across multiple apps, or get lost somewhere between
+                    bookmarks, screenshots, and copied coordinates. My Saved Places was created to keep things simple:
+                    save a place once, keep everything organized in one lightweight app, and open it instantly in the
+                    navigation, map, or taxi app that works best for the moment.
+                </p>
+            </AboutSection>
 
-                    <div>
-                        <p className="mb-6">
-                            For the best experience, launch this app directly from your home screen to&nbsp;enjoy
-                            full-screen mode on your device.
-                        </p>
+            <AboutSection title="Location and privacy">
+                <p>
+                    Your current device location is used to show your position on the map and help you choose places
+                    more easily. We do not create user accounts and we do not store your saved places, lists, selected
+                    apps, or current location on our servers.
+                </p>
+                <p>
+                    Some actions you start yourself, such as search, reverse lookup, map display, or opening a
+                    destination in another app, may still send search text, coordinates, or technical request data to
+                    the relevant providers.
+                </p>
+                <ExternalLink href="https://mysavedplaces.com/legal/app/privacy-policy">
+                    Read the Privacy Policy
+                </ExternalLink>
+            </AboutSection>
 
-                        <h4 className="mb-2 font-bold">How to Install on iPhone</h4>
-                        <ol className="mb-6 list-decimal space-y-2 pl-6">
-                            <li>
-                                Open Safari and go to{' '}
-                                <Link
-                                    href="https://app.mysavedplaces.com"
-                                    className="text-blue-500 hover:text-blue-600"
-                                >
-                                    https://app.mysavedplaces.com
-                                </Link>
-                                .
-                            </li>
-                            <li>Tap the &laquo;Share&raquo; button.</li>
-                            <li>Select &laquo;Add to&nbsp;Home Screen&raquo;.</li>
-                            <li>Tap the My Saved Places icon on&nbsp;your home screen to&nbsp;launch the app.</li>
-                        </ol>
-
-                        <h4 className="mb-2 font-bold">How to Install on Android</h4>
-                        <ol className="mb-6 list-decimal space-y-2 pl-6">
-                            <li>
-                                Open Safari and go to{' '}
-                                <Link
-                                    href="https://app.mysavedplaces.com"
-                                    className="text-blue-500 hover:text-blue-600"
-                                >
-                                    https://app.mysavedplaces.com
-                                </Link>
-                                .
-                            </li>
-                            <li>Tap the menu button (three dots) in&nbsp;the top-right corner.</li>
-                            <li>Select &laquo;Add to&nbsp;Home Screen&raquo;.</li>
-                            <li>Tap the My Saved Places icon on&nbsp;your home screen to&nbsp;launch the app.</li>
-                        </ol>
-
-                        <p className="mb-2 font-bold">Or click button in the footer to install the PWA</p>
-                    </div>
-                </div>
-            </AboutExpander>
-
-            <AboutExpander title="Follow me">
+            <AboutSection title="Feedback and contact">
+                <p>
+                    Found a bug, have feedback, or want support for another navigation, map, or taxi app? I&apos;d love
+                    to hear about it.
+                </p>
                 <ul className="list-disc space-y-2 pl-6">
+                    <li>
+                        <ExternalLink href="mailto:oskolsky.maxim@gmail.com">oskolsky.maxim@gmail.com</ExternalLink>
+                    </li>
                     <li>
                         <ExternalLink href="https://x.com/oskolsky_maxim">X (Twitter)</ExternalLink>
                     </li>
                     <li>
-                        <ExternalLink href="https://www.linkedin.com/in/oskolsky">Linked In</ExternalLink>
+                        <ExternalLink href="https://www.linkedin.com/in/oskolsky">LinkedIn</ExternalLink>
                     </li>
                     <li>
                         <ExternalLink href="https://www.tripadvancer.com/users/oskolsky">Tripadvancer</ExternalLink>
                     </li>
                     <li>
-                        <ExternalLink href="https://github.com/oskolsky">Github</ExternalLink>
-                    </li>
-                    <li>
-                        <ExternalLink href="mailto:oskolsky.maxim@gmail.com">Email</ExternalLink>
+                        <ExternalLink href="https://github.com/oskolsky">GitHub</ExternalLink>
                     </li>
                 </ul>
-            </AboutExpander>
+            </AboutSection>
         </div>
     )
 }

@@ -1,45 +1,22 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
-// prettier-ignore
-export const metadata: Metadata = {
-    title: 'Privacy Policy',
-    description: 'Privacy Policy for the My Saved Places app. Learn how the app handles location data, local storage, and optional iCloud synchronization.',
+import { createPageMetadata } from '@/utils/seo'
+
+export const metadata: Metadata = createPageMetadata({
+    title: 'Privacy Policy | My Saved Places',
+    description:
+        'Read the My Saved Places privacy policy for location access, local storage, and the handling of saved places.',
+    pathname: '/legal/app/privacy-policy',
     keywords: [
         'My Saved Places privacy policy',
         'location app privacy policy',
         'map app privacy',
-        'iCloud data privacy',
         'location storage privacy',
+        'saved places privacy',
+        'places organizer privacy',
     ],
-
-    alternates: {
-        canonical: '/legal/app/privacy-policy',
-    },
-
-    robots: {
-        index: true,
-        follow: true,
-    },
-
-    appleWebApp: {
-        title: 'My Saved Places',
-    },
-
-    openGraph: {
-        title: 'Privacy Policy',
-        description: 'Privacy Policy for the My Saved Places app. Learn how the app handles location data, local storage, and optional iCloud synchronization.',
-        type: 'article',
-        locale: 'en_US',
-        url: '/legal/app/privacy-policy',
-        siteName: 'My Saved Places',
-    },
-
-    twitter: {
-        card: 'summary',
-        title: 'Privacy Policy',
-        description: 'Privacy Policy for the My Saved Places app. Learn how the app handles location data, local storage, and optional iCloud synchronization.',
-    },
-}
+    type: 'article',
+})
 
 export default function PrivacyPage() {
     return (

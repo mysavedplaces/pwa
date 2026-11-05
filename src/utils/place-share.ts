@@ -54,3 +54,33 @@ export const buildPlaceDeepLink = (place: SharedPlace) => {
 
     return `mysavedplaces://place?${params.toString()}`
 }
+
+export const buildPlaceWebLink = (place: SharedPlace) => {
+    const params = new URLSearchParams({
+        v: '1',
+        lat: String(place.coordinates.lat),
+        lng: String(place.coordinates.lng),
+        name: place.name,
+    })
+
+    if (place.iconId) {
+        params.set('icon', place.iconId)
+    }
+
+    return `/?${params.toString()}`
+}
+
+export const buildPlaceShareUrl = (place: SharedPlace, origin: string) => {
+    const params = new URLSearchParams({
+        v: '1',
+        lat: String(place.coordinates.lat),
+        lng: String(place.coordinates.lng),
+        name: place.name,
+    })
+
+    if (place.iconId) {
+        params.set('icon', place.iconId)
+    }
+
+    return new URL(`/share?${params.toString()}`, origin).toString()
+}

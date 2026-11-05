@@ -5,11 +5,33 @@ export enum Keys {
     DOWN = 'ArrowDown',
 }
 
-export enum Navigator {
+export enum ExternalAppId {
+    AppleMaps = 'apple-maps',
+    Citymapper = 'citymapper',
+    Dgis = 'dgis',
+    GoogleMaps = 'google-maps',
+    HereWeGo = 'here-wego',
+    Lyft = 'lyft',
+    MapsMe = 'mapsme',
+    MapQuest = 'mapquest',
+    Moovit = 'moovit',
+    OpenStreetMap = 'openstreetmap',
+    OrganicMaps = 'organic-maps',
+    Scenic = 'scenic',
+    Sygic = 'sygic',
+    Transit = 'transit',
+    Uber = 'uber',
     Waze = 'waze',
-    Google = 'google',
-    Yandex = 'yandex',
-    Apple = 'apple',
+    YandexGo = 'yandex-go',
+    YandexMaps = 'yandex-maps',
+    YandexNavi = 'yandex-navi',
+}
+
+export enum ExternalAppCategory {
+    Navigator = 'navigator',
+    Map = 'map',
+    PublicTransit = 'public-transit',
+    Taxi = 'taxi',
 }
 
 export enum SearchType {

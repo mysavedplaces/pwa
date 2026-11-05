@@ -14,7 +14,7 @@ type InstallPWAButtonProps = {
     height: number
 }
 
-export function InstallPWAButton({ width, height }: InstallPWAButtonProps) {
+export const InstallPWAButton = ({ width, height }: InstallPWAButtonProps) => {
     const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
     const [isIos, setIsIos] = useState(false)
     const [showButton, setShowButton] = useState(false)
@@ -44,12 +44,7 @@ export function InstallPWAButton({ width, height }: InstallPWAButtonProps) {
     const handleInstallClick = async () => {
         if (deferredPrompt) {
             await deferredPrompt.prompt()
-            const choice = await deferredPrompt.userChoice
-            if (choice.outcome === 'accepted') {
-                console.log('PWA установлено')
-            } else {
-                console.log('Пользователь отказался от установки')
-            }
+            await deferredPrompt.userChoice
             setDeferredPrompt(null)
             setShowButton(false)
         } else if (isIos) {
@@ -62,7 +57,12 @@ export function InstallPWAButton({ width, height }: InstallPWAButtonProps) {
     if (!showButton) return null
 
     return (
-        <div onClick={handleInstallClick} className="cursor-pointer">
+        <button
+            type="button"
+            aria-label="Install My Saved Places app"
+            className="cursor-pointer"
+            onClick={handleInstallClick}
+        >
             <Image
                 src="/images/pwa.svg"
                 width={width}
@@ -70,6 +70,6 @@ export function InstallPWAButton({ width, height }: InstallPWAButtonProps) {
                 alt="Install My Saved Places app"
                 loading="eager"
             />
-        </div>
+        </button>
     )
 }

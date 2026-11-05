@@ -1,52 +1,23 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
 import { About } from '@/components/features/about/about'
+import { createPageMetadata } from '@/utils/seo'
 
-// prettier-ignore
-export const metadata: Metadata = {
-    title: 'About',
-    description: 'Learn more about My Saved Places, a free online tool for searching, converting, storing and sharing locations by address or coordinates. Discover how it works and its features.',
+export const metadata: Metadata = createPageMetadata({
+    title: 'About My Saved Places – Locations and Places Organizer',
+    description:
+        'Learn how My Saved Places helps you organize places and locations, keep favorite destinations in lists, and open them in your preferred navigation or map app.',
+    pathname: '/about',
     keywords: [
-        'location picker',
-        'about location picker',
-        'location tool',
-        'GPS tools',
-        'map tools',
-        'coordinates converter',
+        'places organizer',
+        'locations organizer',
+        'saved places app',
+        'favorite places app',
+        'organize locations',
+        'organize favorite places',
+        'location management app',
     ],
-
-    alternates: {
-        canonical: '/about'
-    },
-    
-    robots: {
-        index: true,
-        follow: true,
-    },
-    
-    openGraph: {
-        title: 'About',
-        description: 'Learn more about My Saved Places, a free online tool for searching, converting, storing and sharing locations by address or coordinates. Discover how it works and its features.',
-        type: 'website',
-        url: '/about',
-        siteName: 'My Saved Places',
-        images: [
-            {
-                url: '/icons/icon-512.png',
-                width: 1200,
-                height: 630,
-                alt: 'About My Saved Places',
-            },
-        ],
-    },
-    
-    twitter: {
-        card: 'summary_large_image',
-        title: 'About',
-        description: 'Learn more about My Saved Places, a free online tool for searching, converting, storing and sharing locations by address or coordinates. Discover how it works and its features.',
-        images: ['/icons/icon-512.png'],
-    },
-}
+})
 
 export default function AboutPage() {
     return <About />

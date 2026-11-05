@@ -2,10 +2,10 @@ import { useRouter } from 'next/navigation'
 
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
-import { Place } from '@/utils/types'
+import type { IPlace } from '@/utils/types'
 
 type PreviewShowOnMapButtonProps = {
-    place: Place
+    place: IPlace
 }
 
 export const PreviewShowOnMapButton = ({ place }: PreviewShowOnMapButtonProps) => {

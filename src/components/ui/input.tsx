@@ -1,7 +1,6 @@
 'use client'
 
-import { InputHTMLAttributes } from 'react'
-import { Ref } from 'react'
+import type { InputHTMLAttributes, Ref } from 'react'
 
 import classNames from 'classnames'
 import { TriangleAlertIcon } from 'lucide-react'

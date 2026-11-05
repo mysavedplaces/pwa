@@ -1,10 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-
-import { CheckIcon } from 'lucide-react'
-
-import { useToast } from '@/components/providers/toast-provider'
+import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 
 type LocationActionsCopyButtonProps = {
@@ -12,32 +8,33 @@ type LocationActionsCopyButtonProps = {
 }
 
 export const LocationActionsCopyButton = ({ link }: LocationActionsCopyButtonProps) => {
-    const toast = useToast()
-    const [copied, setCopied] = useState(false)
+    const overlay = useOverlay()
 
     const handleCopy = async () => {
         if (typeof window !== 'undefined' && window.navigator.clipboard) {
             try {
                 await window.navigator.clipboard.writeText(link)
-                setCopied(true)
-                setTimeout(() => setCopied(false), 2000)
+                overlay.showSuccess({
+                    title: 'Link copied',
+                    message: 'The navigator link is ready to paste',
+                })
             } catch {
-                toast.error('Error', 'Failed to copy link')
+                overlay.showError({
+                    title: 'Unable to copy link',
+                    message: 'Please try again',
+                })
             }
         } else {
-            toast.error('Error', 'Clipboard not supported in this browser')
+            overlay.showError({
+                title: 'Clipboard unavailable',
+                message: 'Your browser does not support copying links',
+            })
         }
     }
 
     return (
         <Button variant="minor" onClick={handleCopy}>
-            {copied ? (
-                <span className="flex items-center justify-center gap-1 text-green-600">
-                    <CheckIcon className="h-4 w-4" /> Copied
-                </span>
-            ) : (
-                'Copy link'
-            )}
+            Copy link
         </Button>
     )
 }

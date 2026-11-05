@@ -1,24 +1,26 @@
 import type { MetadataRoute } from 'next'
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://app.mysavedplaces.com'
+
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
-            url: 'https://app.mysavedplaces.com',
+            url: appUrl,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 1,
         },
         {
-            url: 'https://app.mysavedplaces.com/saved',
+            url: `${appUrl}/about`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: 'https://app.mysavedplaces.com/about',
+            url: `${appUrl}/legal/app/privacy-policy`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.8,
+            changeFrequency: 'yearly',
+            priority: 0.3,
         },
     ]
 }

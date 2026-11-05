@@ -1,6 +1,6 @@
 'use client'
 
-import { useToast } from '@/components/providers/toast-provider'
+import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 
 type LocationActionsShareButtonProps = {
@@ -8,7 +8,7 @@ type LocationActionsShareButtonProps = {
 }
 
 export const LocationActionsShareButton = ({ link }: LocationActionsShareButtonProps) => {
-    const toast = useToast()
+    const overlay = useOverlay()
 
     const handleShare = async () => {
         try {
@@ -23,7 +23,10 @@ export const LocationActionsShareButton = ({ link }: LocationActionsShareButtonP
                 return
             }
 
-            toast.error('Error', 'Failed to share link')
+            overlay.showError({
+                title: 'Unable to share link',
+                message: 'Please try again',
+            })
         }
     }
 

@@ -1,8 +1,9 @@
 import { MapPinIcon } from 'lucide-react'
+
 import Link from 'next/link'
 
 import { Logo } from '@/components/ui/logo'
-import { SharedPlace, buildPlaceDeepLink } from '@/utils/place-share'
+import { SharedPlace, buildPlaceDeepLink, buildPlaceWebLink } from '@/utils/place-share'
 
 type PlaceShareProps = {
     place: SharedPlace | null
@@ -12,14 +13,16 @@ export const PlaceShare = ({ place }: PlaceShareProps) => {
     return (
         <main className="flex min-h-dvh flex-col items-center justify-center px-4 py-8">
             <div className="w-full max-w-md space-y-6 rounded-2xl bg-white p-6 shadow-sm">
-                <Logo />
+                <div>
+                    <Logo />
+                </div>
                 {place ? (
                     <>
                         <div className="space-y-3">
                             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100">
                                 <MapPinIcon size={24} className="text-orange-500" />
                             </div>
-                            <h1 className="text-xl font-bold wrap-break-word text-gray-950">
+                            <h1 dir="auto" className="text-xl font-bold wrap-break-word text-gray-950">
                                 {place.name || 'Shared place'}
                             </h1>
                             <p className="text-sm text-gray-600">
@@ -35,6 +38,12 @@ export const PlaceShare = ({ place }: PlaceShareProps) => {
                         >
                             Open in My Saved Places
                         </a>
+                        <Link
+                            href={buildPlaceWebLink(place)}
+                            className="flex min-h-12 items-center justify-center rounded-xl bg-gray-200 px-4 py-3 text-center text-sm font-medium text-gray-950 hover:bg-gray-300"
+                        >
+                            Save on web
+                        </Link>
                     </>
                 ) : (
                     <div className="space-y-2">

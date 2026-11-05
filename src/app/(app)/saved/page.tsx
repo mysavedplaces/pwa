@@ -1,53 +1,15 @@
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 
-import { SavedLocations } from '@/components/features/saved-locations/saved-locations'
+import { Saved } from '@/components/features/saved/saved'
+import { createPageMetadata } from '@/utils/seo'
 
-// prettier-ignore
-export const metadata: Metadata = {
-    title: 'My Saved Locations',
-    description: 'View and manage all your saved locations in one place. Easily access, edit, and share your locations.',
-    keywords: [
-        'my saved location',
-        'saved locations',
-        'my locations',
-        'location picker',
-        'GPS locations',
-        'map bookmarks',
-    ],
-
-    alternates: {
-        canonical: '/saved',
-    },
-    
-    robots: {
-        index: false,
-        follow: true,
-    },
-    
-    openGraph: {
-        title: 'My Saved Locations',
-        description: 'View and manage all your saved locations in one place. Easily access, edit, and share your locations.',
-        type: 'website',
-        url: '/saved',
-        siteName: 'My Saved Location',
-        images: [
-            {
-                url: '/icons/icon-512.png',
-                width: 1200,
-                height: 630,
-                alt: 'Saved Locations',
-            },
-        ],
-    },
-    
-    twitter: {
-        card: 'summary_large_image',
-        title: 'My Saved Locations',
-        description: 'View and manage all your saved locations in one place. Easily access, edit, and share your locations.',
-        images: ['/icons/icon-512.png'],
-    },
-}
+export const metadata: Metadata = createPageMetadata({
+    title: 'Saved Places',
+    description: 'View and organize your saved places, favorite locations, lists, and trips.',
+    pathname: '/saved',
+    index: false,
+})
 
 export default function SavedLocationsPage() {
-    return <SavedLocations />
+    return <Saved />
 }

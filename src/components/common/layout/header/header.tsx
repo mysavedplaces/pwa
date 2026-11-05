@@ -1,5 +1,7 @@
 'use client'
 
+import { InfoIcon } from 'lucide-react'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -7,6 +9,7 @@ import { Logo } from '@/components/ui/logo'
 
 const NAV_ITEMS = [
     { href: '/saved', label: 'Saved' },
+    { href: '/settings', label: 'Settings' },
     { href: '/about', label: 'About' },
 ]
 
@@ -14,12 +17,20 @@ export const Header = () => {
     const pathname = usePathname()
 
     return (
-        <header className="sticky top-0 z-40 flex items-center justify-between gap-x-8 border-b border-gray-300 bg-white py-4">
+        <header className="flex items-center justify-between gap-x-8 border-b border-gray-300 bg-white py-4">
             <Logo />
+
+            <Link
+                href="/about"
+                aria-label="About"
+                className="flex size-7 items-center justify-center text-gray-950 active:opacity-65 md:hidden"
+            >
+                <InfoIcon size={24} />
+            </Link>
 
             <nav className="hidden items-center gap-x-6 md:flex">
                 {NAV_ITEMS.map(item => {
-                    const isActive = pathname === item.href
+                    const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
                     return (
                         <Link
                             key={item.href}

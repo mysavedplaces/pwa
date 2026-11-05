@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { Coordinates, SearchItem } from '@/utils/types'
+import type { Coordinates, SearchItem } from '@/utils/types'
 
 import { fetchPreferredAutocompleteItems, fetchReverseGeocodeAddress } from '../locationiq'
 

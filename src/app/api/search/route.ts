@@ -31,7 +31,7 @@ export const GET = async (req: Request) => {
         }
 
         default:
-            if (q.length > 2) {
+            if (q.length >= 2) {
                 return handleAutocomplete(q, { coordinates: contextCoordinates, locale })
             }
             break

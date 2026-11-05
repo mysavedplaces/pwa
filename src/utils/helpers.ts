@@ -1,4 +1,5 @@
 import { SearchType } from './enums'
+import type { IList, IPlace } from './types'
 
 export const detectSearchType = (value: string): SearchType => {
     const cleaned = normalizeCoordinatesInput(value)
@@ -74,4 +75,43 @@ export function generateDefaultName() {
     })
 
     return `${date} • ${time}`
+}
+
+export const getPlacesCountByListId = (places: IPlace[]) => {
+    const counts: Record<number, number> = {}
+
+    for (const { listId } of places) {
+        if (listId === undefined) continue
+        counts[listId] = (counts[listId] ?? 0) + 1
+    }
+
+    return counts
+}
+
+export const getListNamesById = (lists: IList[]) => {
+    const names: Record<number, string> = {}
+
+    for (const { id, name } of lists) {
+        names[id] = name
+    }
+
+    return names
+}
+
+type ValidateListNameOptions = {
+    currentListId?: number
+}
+
+export const validateListName = (name: string, lists: IList[], options?: ValidateListNameOptions) => {
+    const trimmed = name.trim()
+
+    if (!trimmed) {
+        return 'List name cannot be empty'
+    }
+
+    const hasDuplicate = lists
+        .filter(list => list.id !== options?.currentListId)
+        .some(list => list.name.trim().toLowerCase() === trimmed.toLowerCase())
+
+    return hasDuplicate ? 'A list with this name already exists' : null
 }

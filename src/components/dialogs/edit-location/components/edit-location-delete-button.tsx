@@ -5,10 +5,10 @@ import { EditLocation } from '@/components/dialogs/edit-location/edit-location'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
 import { deletePlace } from '@/utils/db'
-import { Place } from '@/utils/types'
+import type { IPlace } from '@/utils/types'
 
 type EditLocationDeleteButtonProps = {
-    place: Place
+    place: IPlace
     onSuccess: () => void
 }
 
@@ -24,9 +24,16 @@ export const EditLocationDeleteButton = ({ place, onSuccess }: EditLocationDelet
                     try {
                         await deletePlace(place.id)
                         onSuccess()
-                        overlay.close()
+                        overlay.showSuccess({
+                            title: 'Location deleted',
+                            message: 'The location has been removed',
+                        })
                     } catch (err) {
                         console.error(err)
+                        overlay.showError({
+                            title: 'Unable to delete location',
+                            message: 'Please try again',
+                        })
                     }
                 }}
                 onCancel={() => {

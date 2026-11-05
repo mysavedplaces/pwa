@@ -3,17 +3,18 @@
 import { AddLocation } from '@/components/dialogs/add-location/add-location'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
-import { Coordinates } from '@/utils/types'
+import type { Coordinates } from '@/utils/types'
 
 type LocationSaveButtonProps = {
     coordinates: Coordinates
+    onPlacesChange: () => void
 }
 
-export const LocationSaveButton = ({ coordinates }: LocationSaveButtonProps) => {
+export const LocationSaveButton = ({ coordinates, onPlacesChange }: LocationSaveButtonProps) => {
     const overlay = useOverlay()
 
     const handleClick = () => {
-        overlay.open(<AddLocation coordinates={coordinates} />)
+        overlay.open(<AddLocation coordinates={coordinates} onSuccess={onPlacesChange} />)
     }
 
     return (

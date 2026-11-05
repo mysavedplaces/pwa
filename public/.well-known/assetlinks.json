@@ -1,0 +1,12 @@
+[
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.oskolsky.mysavedplaces",
+            "sha256_cert_fingerprints": [
+                "D3:E9:C1:96:9C:75:3F:10:5C:1C:18:04:58:B8:3C:45:9A:7C:16:85:99:EB:6A:FC:64:7A:F9:CE:16:89:46:84"
+            ]
+        }
+    }
+]

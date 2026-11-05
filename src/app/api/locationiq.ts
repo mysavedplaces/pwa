@@ -32,6 +32,7 @@ type ReverseGeocodeLocation = {
 
 const DEFAULT_LOCALE = 'en'
 const DEFAULT_LIMIT = 10
+const REQUEST_TIMEOUT_MS = 8000
 
 const getLocationIQConfig = () => {
     const apiKey = process.env.LOCATIONIQ_API_KEY
@@ -68,18 +69,31 @@ export const parseOptionalCoordinates = (
 
 const fetchWithRetry = async (url: string, init?: RequestInit, attempts = 2): Promise<Response> => {
     let lastResponse: Response | null = null
+    let lastError: unknown = null
 
     for (let attempt = 0; attempt < attempts; attempt += 1) {
-        const res = await fetch(url, { ...init, cache: 'no-store' })
+        try {
+            const res = await fetch(url, {
+                ...init,
+                cache: 'no-store',
+                signal: init?.signal ?? AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+            })
 
-        if (res.ok || res.status < 500 || attempt === attempts - 1) {
-            return res
+            if (res.ok || res.status < 500 || attempt === attempts - 1) {
+                return res
+            }
+
+            lastResponse = res
+        } catch (error) {
+            lastError = error
         }
-
-        lastResponse = res
     }
 
-    return lastResponse as Response
+    if (lastResponse) {
+        return lastResponse
+    }
+
+    throw lastError
 }
 
 const getSearchItemKey = (item: SearchItem): string => {

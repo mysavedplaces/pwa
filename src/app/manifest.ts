@@ -11,8 +11,8 @@ export default function manifest(): MetadataRoute.Manifest {
         display: 'standalone',
         display_override: ['window-controls-overlay', 'standalone', 'fullscreen'],
         orientation: 'portrait',
-        background_color: '#e8f4ff',
-        theme_color: '#e8f4ff',
+        background_color: '#ffffff',
+        theme_color: '#ffffff',
         categories: ['utilities', 'productivity'],
 
         icons: [
@@ -34,26 +34,5 @@ export default function manifest(): MetadataRoute.Manifest {
             },
         ],
 
-        screenshots: [
-            {
-                src: '/images/about/full-screen.jpg',
-                sizes: '800x1334',
-                type: 'image/jpg',
-                form_factor: 'wide',
-            },
-            {
-                src: '/images/about/full-screen.jpg',
-                sizes: '800x1334',
-                type: 'image/jpg',
-                form_factor: 'narrow',
-            },
-        ],
-
-        protocol_handlers: [
-            {
-                protocol: 'web+comedyportal',
-                url: '/?link=%s',
-            },
-        ],
     }
 }

@@ -1,14 +1,60 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 html {
-  font-family: var(--font-roboto), sans-serif;
-  color: var(--color-gray-950);
+    font-family: var(--font-roboto), sans-serif;
+    color: var(--color-gray-950);
 }
 
 body {
-  @apply text-gray-950;
+    @apply text-gray-950;
 }
 
 .maplibregl-map {
-  font: inherit !important;
+    font: inherit !important;
+}
+
+@keyframes feedback-pulse {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    45% {
+        opacity: 0.18;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.12);
+    }
+}
+
+@keyframes feedback-icon {
+    0% {
+        opacity: 0;
+        transform: scale(0.72);
+    }
+
+    65% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes feedback-content {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

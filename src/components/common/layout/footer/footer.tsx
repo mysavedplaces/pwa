@@ -1,4 +1,5 @@
-import { InstallPWAButton } from '@/components/common/install-pwa-button/install-pwa-button'
+import Link from 'next/link'
+
 import { ExternalLink } from '@/components/ui/external-link'
 
 export const Footer = () => {
@@ -14,7 +15,9 @@ export const Footer = () => {
                 </ExternalLink>
             </div>
 
-            <InstallPWAButton width={135} height={40} />
+            <Link href="/legal/app/privacy-policy" className="text-sm text-blue-500 hover:text-blue-600 hover:underline">
+                Privacy Policy
+            </Link>
         </footer>
     )
 }

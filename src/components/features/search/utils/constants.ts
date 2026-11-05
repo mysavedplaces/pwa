@@ -1,0 +1,1 @@
+export const SEARCH_SECTION_ITEMS_LIMIT = 10

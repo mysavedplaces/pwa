@@ -1,10 +1,10 @@
 import { EditLocation } from '@/components/dialogs/edit-location/edit-location'
 import { useOverlay } from '@/components/providers/overlay-provider'
 import { Button } from '@/components/ui/button'
-import { Place } from '@/utils/types'
+import type { IPlace } from '@/utils/types'
 
 type PreviewEditButtonProps = {
-    place: Place
+    place: IPlace
     onSuccess: () => void
 }
 

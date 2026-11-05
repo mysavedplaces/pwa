@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
 
 import { RadarIcon, SearchIcon, XIcon } from 'lucide-react'
 
@@ -38,7 +38,6 @@ export const SearchInput = (props: SearchInputProps) => {
                     name="search"
                     value={props.value}
                     autoComplete="off"
-                    autoFocus
                     className="h-full w-full bg-transparent text-sm placeholder:text-gray-600 focus:outline-none"
                     placeholder={props.placeholder}
                     onClick={props.onClick}
@@ -47,12 +46,14 @@ export const SearchInput = (props: SearchInputProps) => {
             </div>
 
             {props.value && (
-                <div
+                <button
+                    type="button"
+                    aria-label="Clear search"
                     className="flex size-10 shrink-0 cursor-pointer items-center justify-center text-gray-300 hover:text-gray-950"
                     onClick={props.onClear}
                 >
                     <XIcon size={20} />
-                </div>
+                </button>
             )}
         </div>
     )
